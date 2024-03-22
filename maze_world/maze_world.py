@@ -1,7 +1,7 @@
 import numpy as np
 from utils import visualize_maze_with_path
 
-grid = [
+maze = [
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
     [0, 1, 0, 1, 0, 1, 0, 0, 0, 0],
     [0 ,1, 0, 1, 0, 1, 1, 1, 1, 0],
@@ -10,8 +10,8 @@ grid = [
     [0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 0, 0, 0, 0, 0, 0]
 ]
-height = len(grid)
-width = len(grid[-1])
+height = len(maze)
+width = len(maze[-1])
 start = (0, 0)
 goal = (height - 1, width - 1)
 goal = (6, 4)
@@ -40,7 +40,7 @@ def transition(state, action):
     else:
         raise NotImplemented()
     
-    if grid[ni][nj] == 1:
+    if maze[ni][nj] == 1:
         return state
     else:
         return (ni, nj)
@@ -79,22 +79,24 @@ def evaluate_current_policy(Q, is_visualize=False):
         print(f"steps_taken: {steps_taken}")
 
     if is_visualize:
-        visualize_maze_with_path(grid, start, goal, trajectory)
+        visualize_maze_with_path(maze, start, goal, trajectory)
 
-n_episodes = 30000
-gamma = 1
-alpha = 0.01
-for n in range(n_episodes):
-    state = start
-    while state != goal:
-        action = get_action(state)
-        next_state = transition(state, action)
-        reward = get_reward(state, action)
-        N[state][action] = N[state][action] + 1
-        Q[state][action] = Q[state][action] + alpha * (reward + gamma * max(Q[next_state].values()) - Q[state][action])
-        state = next_state
+def execute_Q_learning(n_episodes, gamma=1, alpha=0.01):
+    for n in range(n_episodes):
+        state = start
+        while state != goal:
+            action = get_action(state)
+            next_state = transition(state, action)
+            reward = get_reward(state, action)
+            N[state][action] = N[state][action] + 1
+            Q[state][action] = Q[state][action] + alpha * (reward + gamma * max(Q[next_state].values()) - Q[state][action])
+            state = next_state
 
-    if n % 100 == 0:
-        evaluate_current_policy(Q)
+        if n % 100 == 0:
+            evaluate_current_policy(Q)
 
-evaluate_current_policy(Q, is_visualize=True)
+
+if __name__ == "main":
+    n_episodes = 30000
+    execute_Q_learning(n_episodes)
+    evaluate_current_policy(Q, is_visualize=True)
