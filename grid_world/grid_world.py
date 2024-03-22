@@ -1,17 +1,20 @@
 import numpy as np
+from utils import visualize_maze_with_path
 
 grid = [
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
-    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
-    [0 ,1, 0, 1, 0, 1, 1, 0, 1, 0],
     [0, 1, 0, 1, 0, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0],
+    [0 ,1, 0, 1, 0, 1, 1, 1, 1, 0],
+    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+    [0, 1, 0, 0, 0, 1, 1, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0]
 ]
 height = len(grid)
 width = len(grid[-1])
 start = (0, 0)
 goal = (height - 1, width - 1)
-goal = (3, 6)
+goal = (6, 4)
 actions = ["left", "up", "down", "right"]
 
 def get_reward(state, action):
@@ -60,7 +63,7 @@ def argmax(state, Q):
 def get_action(state, eps=0.1):
     return np.random.choice([argmax(state, Q), np.random.choice(actions)], p=[1-eps, eps])
 
-def evaluate_current_policy():
+def evaluate_current_policy(Q, is_visualize=False):
     state = start
     steps_taken = 0
     trajectory = [start]
@@ -75,12 +78,10 @@ def evaluate_current_policy():
     else:
         print(f"steps_taken: {steps_taken}")
 
-    trajectory_history = str(start)
-    for t in trajectory[1:]:
-        trajectory_history += f"->{t}"
-    print(trajectory_history)
+    if is_visualize:
+        visualize_maze_with_path(grid, start, goal, trajectory)
 
-n_episodes = 10000
+n_episodes = 30000
 gamma = 1
 alpha = 0.01
 for n in range(n_episodes):
@@ -94,6 +95,6 @@ for n in range(n_episodes):
         state = next_state
 
     if n % 100 == 0:
-        evaluate_current_policy()
+        evaluate_current_policy(Q)
 
-print(Q)
+evaluate_current_policy(Q, is_visualize=True)
