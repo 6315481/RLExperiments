@@ -1,20 +1,13 @@
 import numpy as np
 from utils import visualize_maze_with_path
+from maze_generator import maze_generator
 
-maze = [
-    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
-    [0, 1, 0, 1, 0, 1, 0, 0, 0, 0],
-    [0 ,1, 0, 1, 0, 1, 1, 1, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0],
-    [0, 1, 0, 0, 0, 1, 1, 0, 1, 0],
-    [0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0]
-]
-height = len(maze)
-width = len(maze[-1])
+width = 30
+height = 30
+num_islands = 100
+maze = maze_generator(width, height, num_islands)
 start = (0, 0)
 goal = (height - 1, width - 1)
-goal = (6, 4)
 actions = ["left", "up", "down", "right"]
 
 def get_reward(state, action):
@@ -96,7 +89,7 @@ def execute_Q_learning(n_episodes, gamma=1, alpha=0.01):
             evaluate_current_policy(Q)
 
 
-if __name__ == "main":
-    n_episodes = 30000
+if __name__ == "__main__":
+    n_episodes = 100000
     execute_Q_learning(n_episodes)
     evaluate_current_policy(Q, is_visualize=True)

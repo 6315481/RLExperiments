@@ -66,11 +66,12 @@ def maze_generator(width, height, num_islands=70):
 
     return maze
 
-mazes = []
-for i in range(10):
-    width, height = 30, 30
-    start = (0, 0)
-    goal = (height-1, width-1)
-    mazes.append(maze_generator(width, height))
+if __name__ == "__main__":
+    mazes = []
+    for i in range(20):
+        width, height = 50, 50
+        start = (0, 0)
+        goal = (height-1, width-1)
+        mazes.append(maze_generator(width, height, num_islands=260))
 
-visualize_mazes_slideshow(mazes, start, goal)
+        visualize_mazes_slideshow(mazes, start, goal)
