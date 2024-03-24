@@ -74,4 +74,4 @@ if __name__ == "__main__":
         goal = (height-1, width-1)
         mazes.append(maze_generator(width, height, num_islands=260))
 
-        visualize_mazes_slideshow(mazes, start, goal)
+    visualize_mazes_slideshow(mazes, start, goal)

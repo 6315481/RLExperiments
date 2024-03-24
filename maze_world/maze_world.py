@@ -90,6 +90,8 @@ def execute_Q_learning(n_episodes, gamma=1, alpha=0.01):
 
 
 if __name__ == "__main__":
-    n_episodes = 100000
+    n_episodes = 50000
     execute_Q_learning(n_episodes)
     evaluate_current_policy(Q, is_visualize=True)
+
+print(Q)
