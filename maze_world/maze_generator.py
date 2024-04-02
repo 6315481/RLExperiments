@@ -51,7 +51,7 @@ def _join_islands(maze, mst_edges):
             cur_j = jsr + sign_j * j
             maze[it][cur_j] = 0
 
-def maze_generator(width, height, num_islands=70):
+def generate_maze(width, height, num_islands=70):
     maze = [[1 for j in range(width)] for i in range(height)]
     start = (0, 0)
     goal = (height-1, width-1)
@@ -72,6 +72,6 @@ if __name__ == "__main__":
         width, height = 50, 50
         start = (0, 0)
         goal = (height-1, width-1)
-        mazes.append(maze_generator(width, height, num_islands=260))
+        mazes.append(generate_maze(width, height, num_islands=260))
 
     visualize_mazes_slideshow(mazes, start, goal)
